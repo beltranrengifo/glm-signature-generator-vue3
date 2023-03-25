@@ -1,47 +1,110 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
+  <header id="main-header">
+    <logo :logo="logo" alt="Grupo La Musa" />
+    <title-component title="Generador de firmas" tag="h1" small />
   </header>
-
   <main>
-    <TheWelcome />
+    <section>
+      <title-component class="app-width preview-header" title="Instrucciones" />
+      <div class="app-container app-width">
+        <instructions-block type="Mail OSX" :content="instructions.mail" />
+        <instructions-block type="Mail iOS" :content="instructions.ios" />
+        <instructions-block type="Outlook" :content="instructions.outlook" />
+        <instructions-block type="Gmail" :content="instructions.gmail" />
+      </div>
+    </section>
+    <section class="m-t-48">
+      <title-component class="app-width" title="Crea tu firma" tag="h2" />
+      <div class="app-container app-width">
+        <signature-generator @signatureChange="updateSignature" />
+      </div>
+    </section>
+    <section class="m-t-48">
+      <header class="app-width preview-header">
+        <title-component title="Vista previa" />
+        <copy-button
+          :class="{ disabled: !person.name || !person.company }"
+          elementToCopy="#signature"
+        />
+      </header>
+      <signature-prerender :person="person" />
+    </section>
   </main>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
+<script>
+import { IMAGES } from '@/config'
+import SignatureGenerator from '@/components/SignatureGenerator.vue'
+import TitleComponent from '@/components/TitleComponent.vue'
+import Logo from '@/components/Logo.vue'
+import SignaturePrerender from '@/components/SignaturePrerender.vue'
+import CopyButton from '@/components/CopyButton.vue'
+import InstructionsBlock from '@/components/InstructionsBlock.vue'
+import instructions from '@/assets/js/instructions'
+
+export default {
+  name: 'app',
+
+  components: {
+    SignatureGenerator,
+    TitleComponent,
+    Logo,
+    SignaturePrerender,
+    CopyButton,
+    InstructionsBlock
+  },
+
+  data() {
+    return {
+      subtitle: 'Grupo La Musa',
+      person: {},
+      copyButtonText: 'Copiar',
+      instructions: instructions,
+      IMAGES
+    }
+  },
+
+  computed: {
+    logo() {
+      return new URL(`./assets/images/${this.IMAGES.DEFAULT_LOGO}`, import.meta.url).href
+    }
+  },
+
+  methods: {
+    updateSignature(val) {
+      this.person = val
+    }
+  }
 }
+</script>
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+<style lang="scss">
+#app {
+  min-height: 100vh;
+  padding: 0 48px 48px;
+  box-sizing: border-box;
 }
+</style>
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+<style lang="scss" scoped>
+.app-width {
+  width: 800px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+.app-container {
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.05);
+  background: $--color-white;
+  border-radius: 4px;
+}
+.preview-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+#main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>
