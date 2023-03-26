@@ -46,18 +46,39 @@
     </div>
     <div class="form__item">
       <label class="label" for="image">Ocultar imagen</label>
-      <!-- <toggle-button @change="signature.image = !signature.image" /> -->
+      <vue3-toggle-button
+        @change="signature.image = !signature.image"
+        class="form__toggle-button"
+        :isActive="false"
+        :trackHeight="`${20}px`"
+        :trackWidth="`${58}px`"
+        :handleDiameter="`${18}px`"
+      />
     </div>
     <div class="form__item">
       <label class="label" for="image">Usar logo del 25 Aniversario</label>
-      <!-- <toggle-button @change="signature.useAltLogo = !signature.useAltLogo" /> -->
+      <vue3-toggle-button
+        @change="signature.useAltLogo = !signature.useAltLogo"
+        class="form__toggle-button"
+        :isActive="false"
+        :trackHeight="`${20}px`"
+        :trackWidth="`${58}px`"
+        :handleDiameter="`${18}px`"
+      />
     </div>
   </div>
 </template>
 
 <script>
+import { Vue3ToggleButton } from 'vue3-toggle-button'
+import '../../node_modules/vue3-toggle-button/dist/style.css'
+
 export default {
   name: 'SignatureGenerator',
+
+  components: {
+    Vue3ToggleButton
+  },
 
   data() {
     return {
@@ -120,6 +141,9 @@ export default {
     &:last-child {
       margin-bottom: 32px;
     }
+  }
+  &__toggle-button {
+    margin-top: 16px;
   }
 }
 </style>
