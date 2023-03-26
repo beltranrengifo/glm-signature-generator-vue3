@@ -80,6 +80,7 @@ export default {
 
 <style lang="scss">
 #app {
+  background: $--color-grey;
   min-height: 100vh;
   padding: 0 48px 48px;
   box-sizing: border-box;
